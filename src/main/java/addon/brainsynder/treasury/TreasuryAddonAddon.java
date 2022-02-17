@@ -1,15 +1,15 @@
 package addon.brainsynder.treasury;
 
 import com.google.common.collect.Lists;
+import me.lokka30.treasury.api.common.service.Service;
+import me.lokka30.treasury.api.common.service.ServiceRegistry;
 import me.lokka30.treasury.api.economy.EconomyProvider;
 import me.lokka30.treasury.api.economy.account.PlayerAccount;
-import me.lokka30.treasury.api.economy.currency.Currency;
 import me.lokka30.treasury.api.economy.response.EconomyException;
 import me.lokka30.treasury.api.economy.response.EconomySubscriber;
 import me.lokka30.treasury.api.economy.transaction.EconomyTransactionInitiator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import simplepets.brainsynder.addon.presets.EconomyAddon;
 import simplepets.brainsynder.api.Namespace;
@@ -18,13 +18,13 @@ import simplepets.brainsynder.debug.DebugLevel;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 @Namespace(namespace = "Treasury")
 public class TreasuryAddonAddon extends EconomyAddon {
     private EconomyProvider provider;
-    private Currency currency;
 
     @Override
     public boolean shouldEnable() {
@@ -34,18 +34,27 @@ public class TreasuryAddonAddon extends EconomyAddon {
             SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Please download it from: https://www.spigotmc.org/resources/99531/");
             return false;
         }
+        if (!plugin.getDescription().getVersion().startsWith("1.1.0")) {
+            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "You are using an outdated Treasury version, this addon uses v1.1.0");
+            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Please download it from: https://www.spigotmc.org/resources/99531/");
+            return false;
+        }
         return true;
     }
 
     @Override
     public void init() {
-        RegisteredServiceProvider<EconomyProvider> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(EconomyProvider.class);
-        if (economyProvider != null) {
-            this.provider = economyProvider.getProvider();
-        }else{
+        ServiceRegistry serviceRegistry = ServiceRegistry.INSTANCE;
+        Optional<Service<EconomyProvider>> serviceOpt = serviceRegistry.serviceFor(EconomyProvider.class);
+
+        if(serviceOpt.isEmpty()) {
             setEnabled(false);
             SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Oh No! We could not find the Economy Provider for Treasury!");
+            return;
         }
+
+        Service<EconomyProvider> service = serviceOpt.get();
+        this.provider = service.get();
     }
 
     @Override
@@ -112,7 +121,7 @@ public class TreasuryAddonAddon extends EconomyAddon {
 
     @Override
     public double getVersion() {
-        return 0.1;
+        return 0.2;
     }
 
     @Override

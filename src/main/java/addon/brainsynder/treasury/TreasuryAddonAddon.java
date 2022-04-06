@@ -1,6 +1,5 @@
 package addon.brainsynder.treasury;
 
-import com.google.common.collect.Lists;
 import me.lokka30.treasury.api.common.service.Service;
 import me.lokka30.treasury.api.common.service.ServiceRegistry;
 import me.lokka30.treasury.api.economy.EconomyProvider;
@@ -11,19 +10,18 @@ import me.lokka30.treasury.api.economy.transaction.EconomyTransactionInitiator;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import simplepets.brainsynder.addon.presets.EconomyAddon;
+import simplepets.brainsynder.addon.presets.EconomyModule;
 import simplepets.brainsynder.api.Namespace;
 import simplepets.brainsynder.api.plugin.SimplePets;
 import simplepets.brainsynder.debug.DebugLevel;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 @Namespace(namespace = "Treasury")
-public class TreasuryAddonAddon extends EconomyAddon {
+public class TreasuryAddonAddon extends EconomyModule {
     private EconomyProvider provider;
 
     @Override
@@ -117,23 +115,5 @@ public class TreasuryAddonAddon extends EconomyAddon {
                 SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Failed to fetch players account("+uuid+"): "+exception.getMessage());
             }
         });
-    }
-
-    @Override
-    public double getVersion() {
-        return 0.2;
-    }
-
-    @Override
-    public String getAuthor() {
-        return "brainsynder";
-    }
-
-    @Override
-    public List<String> getDescription() {
-        return Lists.newArrayList(
-                "&7This addon links into the Treasury Plugin",
-                "&7To make it possible to buy pets with in-game money"
-        );
     }
 }

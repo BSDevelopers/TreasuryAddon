@@ -8,5 +8,16 @@
   "description": [
     "&7This addon links into the Treasury Plugin",
     "&7To make it possible to buy pets with in-game money"
+  ],
+
+  "plugin-support": [
+    {
+      "name": "Treasury",
+      "url": "https://www.spigotmc.org/resources/99531/"
+    }
+  ],
+
+  "class-checks": [
+    "me.lokka30.treasury.api.common.service.Service"
   ]
 }

@@ -27,11 +27,7 @@ public class TreasuryAddonAddon extends EconomyModule {
     @Override
     public boolean shouldEnable() {
         Plugin plugin = Bukkit.getPluginManager().getPlugin("Treasury");
-        if (plugin == null) {
-            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Treasury wasn't found!");
-            SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Please download it from: https://www.spigotmc.org/resources/99531/");
-            return false;
-        }
+        if (plugin == null) return false;
         if (!plugin.getDescription().getVersion().startsWith("1.1.0")) {
             SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "You are using an outdated Treasury version, this addon uses v1.1.0");
             SimplePets.getDebugLogger().debug(DebugLevel.ERROR, "Please download it from: https://www.spigotmc.org/resources/99531/");
